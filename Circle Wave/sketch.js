@@ -2,7 +2,7 @@
 var angleIncrement = 0.01;
 var r = 350;
 var l =0;
-var c =255;
+var c =85;
 
 function setup() {
  createCanvas(900,900);
@@ -24,7 +24,7 @@ function draw() {
 	  		vertex(radius*cos(angle),radius*sin(angle));
 	  	}
 	  	endShape()
-	  	c = c/2;
+	  	c = c +85;
 	}
-	c=255;
+	c=85;
 }
