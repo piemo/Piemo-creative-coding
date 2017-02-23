@@ -39,4 +39,17 @@ function Particle(x, y) {
     this.acc.add(force);
   }
 
+    this.repelled = function(target) {
+    var force = p5.Vector.sub(target, this.pos);
+    var d = force.mag();
+    if(d>200){
+      return createVector(0,0);
+    }
+    d = constrain(d, 20, 25);
+    var G = 150;
+    var strength = G / (d*d);
+    force.setMag(-strength);
+    this.acc.add(force);
+  }
+
 }

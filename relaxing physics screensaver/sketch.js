@@ -1,26 +1,28 @@
 var attractors = [];
 var particles = [];
-var k=0;
-var cir;
-var tempSpeed;
+var backgroundInterval=10;
+var repeller;
+var atrNumber= 2;
+
 function setup() {
 createCanvas(windowWidth, windowHeight);
 
-  // for (var i = 0; i < 10; i++) {
-  //   attractors.push(createVector(random(width), random(height)));
-  // }
   background(0);
-  cir = createVector(50,50);
-  tempSpeed = p5.Vector.random2D();
-  tempSpeed.setMag(random(2,5));
-  attractors.push(new Attractor(random(width),random(height)));
-  attractors.push(new Attractor(random(width),random(height)));
+  for(var i =0; i<atrNumber; i++){
+    attractors.push(new Attractor(random(width),random(height)));
+  }
 
 }
 
-//function mousePressed() {
-//  attractors.push(new Attractor(mouseX,mouseY));
-//}
+function mousePressed() {
+  repeller = new Attractor(mouseX,mouseY);
+  repeller.vel.mult(0);
+  repeller.isRepeller = true;
+}
+
+function mouseReleased() {
+  repeller = null;
+}
 
 //function keyPressed() {
 //  var j=0;
@@ -38,10 +40,9 @@ createCanvas(windowWidth, windowHeight);
 //}
 
 function draw() {
-  k=k+1;
-  if(k>10){
-    k=-0;
-    background(0,0,0,20);
+
+  if(frameCount % backgroundInterval==0){
+        background(0,0,0,20);
   }
 
   particles.push(new Particle(random(width), random(height)));
@@ -52,12 +53,15 @@ function draw() {
 
   for (var i = 0; i < attractors.length; i++) {
     attractors[i].update();
-    //attractors[i].show();
   }
   for (var i = 0; i < particles.length; i++) {
     var particle = particles[i];
     for (var j = 0; j < attractors.length; j++) {
-      particle.attracted(attractors[j].pos);
+        if(mouseIsPressed){
+          repeller.pos.set(mouseX,mouseY);
+          particle.repelled(repeller.pos);
+        }
+        particle.attracted(attractors[j].pos);
     }
     particle.update();
     particle.show();

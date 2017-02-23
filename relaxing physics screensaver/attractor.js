@@ -4,10 +4,11 @@ function Attractor(x, y) {
   this.prev = createVector(x, y);
   this.vel = p5.Vector.random2D();
   this.vel.setMag(random(1, 3));
+  this.isRepeller= false;
 
   this.update = function(){
     this.pos.add(this.vel);
-
+    
     if (this.pos.x > windowWidth || this.pos.x < 0)  {
       this.vel.x = -this.vel.x;
     }
